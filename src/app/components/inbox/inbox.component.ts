@@ -77,11 +77,14 @@ export class InboxComponent implements OnInit {
     sendMessage() {
         console.log('\nevent: sendMessage()');
 
+        console.log('Chat Session Id:  ' + this.chatSession.chatSessionId);
         console.log('Message: ' + this.message);
         console.log('Sender Id(Current User):' + this.currentUser.userId + ' - ' + this.currentUser.name);
         console.log('Receiver Id:' + (this.chatSession.user1Id === this.currentUser.userId
              ? (this.chatSession.user2Id + ' - ' + this.chatSession.user2.name)
              : (this.chatSession.user1Id + ' - ' + this.chatSession.user1.name)));
+
+        this.message = '';
 
     }
 

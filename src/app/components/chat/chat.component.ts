@@ -70,8 +70,6 @@ export class ChatComponent implements OnInit {
                 this.questionNum++;
             }
         }
-        document.getElementById('chatBox').append();
-
     }
 }
 

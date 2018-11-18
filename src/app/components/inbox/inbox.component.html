@@ -38,6 +38,7 @@
                 </div>
             </div>
             <div class="mesgs">
+                <h3>{{ messengerName }}</h3>
                 <div class="msg_history">
                     <div *ngFor="let chat of chats">
                         <div *ngIf="chat.receiverId === currentUser.userId" class="incoming_msg">
@@ -45,7 +46,7 @@
                                     alt="sunil"></div>
                             <div class="received_msg">
                                 <div class="received_withd_msg">
-                                    <h3>{{"Sender" + chat.sender.name}}</h3>
+                                    <small>{{ chat.sender.name }}</small>
                                     <p>{{ chat.message }}</p>
                                     <span class="time_date"> {{ chat.dateUpdated }}</span>
                                 </div>
@@ -53,7 +54,7 @@
                         </div>
                         <div *ngIf="chat.senderId === currentUser.userId" class="outgoing_msg">
                             <div class="sent_msg">
-                                <h3>{{"Sender" + chat.sender.name}}</h3>
+                                <small>{{ "Me: " + chat.sender.name }}</small>
                                 <p>{{ chat.message }}</p>
                                 <span class="time_date"> {{ chat.dateUpdated }}</span>
                             </div>

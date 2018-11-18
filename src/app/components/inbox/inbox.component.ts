@@ -45,6 +45,7 @@ export class InboxComponent implements OnInit {
     selectedUser: any;
     hideModel: any;
     chatSession: ChatSession;
+    messengerName: string;
 
     //#endregion properties
 
@@ -63,7 +64,7 @@ export class InboxComponent implements OnInit {
 
         this.chats = this.chatService.getChatFromChatSession(chatSession.chatSessionId);
         this.chatSession = chatSession;
-
+        this.setMessengerName();
         this.showMessageInput();
     }
 
@@ -78,11 +79,8 @@ export class InboxComponent implements OnInit {
         console.log('\nevent: sendMessage()');
 
         const chat = this.createChat();
-
         this.chatService.add(chat);
-
-        this.chats = this.chatService.get();
-
+        this.chats = this.chatService.getChatFromChatSession(this.chatSession.chatSessionId);
         this.message = '';                                                                  // Clear message
     }
 
@@ -111,6 +109,7 @@ export class InboxComponent implements OnInit {
         this.hideMessageInput();
         this.chats = [];
         this.chatSession = null;
+        this.messengerName = '';
     }
 
     private createHideModel() {
@@ -155,6 +154,12 @@ export class InboxComponent implements OnInit {
         };
 
         return chat;
+    }
+
+    private setMessengerName() {
+        this.messengerName = (this.chatSession.user1Id === this.currentUser.userId
+            ? this.chatSession.user2.name
+            : this.chatSession.user1.name);
     }
 
     //#endregion methods

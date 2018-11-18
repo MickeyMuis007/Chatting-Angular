@@ -77,15 +77,13 @@ export class InboxComponent implements OnInit {
     sendMessage() {
         console.log('\nevent: sendMessage()');
 
-        console.log('Chat Session Id:  ' + this.chatSession.chatSessionId);
-        console.log('Message: ' + this.message);
-        console.log('Sender Id(Current User):' + this.currentUser.userId + ' - ' + this.currentUser.name);
-        console.log('Receiver Id:' + (this.chatSession.user1Id === this.currentUser.userId
-             ? (this.chatSession.user2Id + ' - ' + this.chatSession.user2.name)
-             : (this.chatSession.user1Id + ' - ' + this.chatSession.user1.name)));
+        const chat = this.createChat();
 
-        this.message = '';
+        this.chatService.add(chat);
 
+        this.chats = this.chatService.get();
+
+        this.message = '';                                                                  // Clear message
     }
 
     //#endregion events
@@ -134,6 +132,29 @@ export class InboxComponent implements OnInit {
         console.log('method: showMessageInput()');
 
         this.hideModel.message = false;
+    }
+
+    private createChat(): Chat {
+        // Displaying info required to save chat
+        console.log('Chat Session Id:  ' + this.chatSession.chatSessionId);
+        console.log('Message: ' + this.message);
+        console.log('Sender Id(Current User):' + this.currentUser.userId + ' - ' + this.currentUser.name);
+        console.log('Receiver Id:' + (this.chatSession.user1Id === this.currentUser.userId
+             ? (this.chatSession.user2Id + ' - ' + this.chatSession.user2.name)
+             : (this.chatSession.user1Id + ' - ' + this.chatSession.user1.name)));
+
+        const chat: Chat = {
+            chatId: (this.chats.length + 2),
+            chatSessionId: this.chatSession.chatSessionId,
+            senderId: this.currentUser.userId,
+            sender: this.currentUser,
+            receiverId: (this.chatSession.user1Id === this.currentUser.userId ? this.chatSession.user2Id : this.chatSession.user1Id),
+            receiver: (this.chatSession.user1Id === this.currentUser.userId ? this.chatSession.user2 : this.chatSession.user1),
+            dateUpdated: new Date(),
+            message: this.message
+        };
+
+        return chat;
     }
 
     //#endregion methods

@@ -17,7 +17,9 @@ export class ChatService {
     }
 
     getChatFromChatSession(chatSeasonId: number) {
-        const foundChats = this.chats.filter(find => find.chatSessionId === chatSeasonId);
+        const foundChats = this.chats.filter(find => find.chatSessionId === chatSeasonId).sort((t, r) => {
+           return r.chatId - t.chatId;
+        });
         return foundChats;
     }
 

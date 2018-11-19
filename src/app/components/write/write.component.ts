@@ -81,20 +81,29 @@ export class WriteComponent implements OnInit {
 
         this.currentUser = this.userService.getUser(Number(this.currentUserId));
 
-        this.validateSendButton();
         this.chatSessionExist();
+        this.validateSendButton();
     }
 
     senderChanged() {
         console.log('\nevent: senderChanged() -> Sender Changed');
 
+        this.cellNo = '';
         this.sender = this.userService.getUser(Number(this.senderId));
-        this.validateSendButton();
         this.chatSessionExist();
+        this.validateSendButton();
     }
 
     cellNoKeyUp() {
         console.log('\nevent: cellNoKeyUp()');
+
+        this.senderId = -1;
+        this.sender = this.createSenderFromCellNo();
+        this.validateSendButton();
+    }
+
+    messageKeyDown() {
+        console.log('\nevent: messageKeyDown()');
 
         this.validateSendButton();
     }
@@ -148,7 +157,9 @@ export class WriteComponent implements OnInit {
     private validateSendButton() {
         console.log('method: validateSendButton()');
 
-        if ((Number(this.senderId) !== -1 || this.cellNo) && this.currentUser.userId !== Number(this.senderId)) {
+        if ((Number(this.senderId) !== -1 || (this.validateCellNo() && this.cellNo)) &&
+            this.currentUser.userId !== Number(this.senderId) &&
+            this.message) {
             this.enableSendButton();
         } else {
             this.disableSendButton();
@@ -161,6 +172,7 @@ export class WriteComponent implements OnInit {
         this.message = '';
         this.cellNo = '';
         this.senderId = -1;
+        this.sender = null;
 
         // Create disable model that will be used for all disabling components. Set all disabling to default state.
         this.disableSendButton();
@@ -169,15 +181,15 @@ export class WriteComponent implements OnInit {
     private chatSessionExist() {
         console.log('method: chatSessionExist()');
         console.log('Chat Session Exist: ' +
-            this.chatSessionService.chatSessionExist(Number(this.currentUser.userId), Number(this.senderId)));
+            this.chatSessionService.chatSessionExist(Number(this.currentUser.userId), Number(this.sender.userId)));
 
-        return this.chatSessionService.chatSessionExist(Number(this.currentUser.userId), Number(this.senderId));
+        return this.chatSessionService.chatSessionExist(Number(this.currentUser.userId), Number(this.sender.userId));
     }
 
     private getChatSession() {
         console.log('method: getChatSesison()');
 
-        this.chatSession = this.chatSessionService.getExistingChatSession(Number(this.currentUser.userId), Number(this.senderId));
+        this.chatSession = this.chatSessionService.getExistingChatSession(Number(this.currentUser.userId), Number(this.sender.userId));
     }
 
     private createChat(): Chat {
@@ -206,6 +218,35 @@ export class WriteComponent implements OnInit {
         };
         return chatSession;
     }
+
+    private createSenderFromCellNo() {
+        let sender: User = null;
+
+        if (this.validateCellNo()) {
+            if (this.senderId === -1 && this.cellNo) {
+                sender = {
+                    userId: Number(this.cellNo),
+                    contactNo: this.cellNo,
+                    name: this.cellNo,
+                    displayName: this.cellNo
+                };
+            }
+        }
+        return sender;
+    }
+
+    private validateCellNo() {
+        let valid = false;
+        const isNumber = !isNaN(Number(this.cellNo));
+        if (isNumber) {
+            valid = true;
+            console.log('Cell No valid');
+        } else {
+            console.log('Cell No not valid');
+        }
+        return valid;
+    }
+
     //#endregion method
 
 }

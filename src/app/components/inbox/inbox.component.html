@@ -26,7 +26,7 @@
                 </div>
                 <div class="inbox_chat">                    
                     <li *ngFor="let chatSession of chatSessions" class="chat_list btn btn-info" (click)="chatSessionSelection(chatSession, $event)"
-                        [ngClass]="{'active': selectedChatSessionId === chatSession.chatSessionId}" >
+                        [ngClass]="{'active_chat': selectedChatSessionId === chatSession.chatSessionId}" >
                         <div class="chat_people">
                             <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
                             </div>

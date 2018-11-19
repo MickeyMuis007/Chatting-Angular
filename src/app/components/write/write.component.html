@@ -1,15 +1,36 @@
-<div class="container">
-    <br style="clear:both">
-    <div class="form-group col-md-12">
-        <label id="messageLabel" for="message">{{ title }} </label>
-        <textarea class="form-control input-sm " type="textarea" id="message" placeholder="Message" maxlength="140"
-            rows="7"></textarea>
-        <span class="help-block">
-            <p id="characterLeft" class="help-block ">You have reached the limit</p>
-        </span>
+<br />
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-user"></i></span>
     </div>
-    <br style="clear:both">
+    <select [(ngModel)]="selectedUserId" (change)="selectedUserChanged($event)" class="custom-select col-md-1">
+        <option *ngFor="let user of users" value="{{user.userId}}">{{user.name}}</option>
+    </select>
+</div>
+<div class="container">
+    <br />
+    <h1>{{ title }}</h1>
+    <div class="form-group input-group col-md-12">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-address-book"></i></span>
+        </div>
+        <select [(ngModel)]="senderId" (change)="senderChanged($event)" class="custom-select">
+            <option value="-1">Contacts...</option>
+            <option *ngFor="let user of users" value="{{user.userId}}">{{user.name}}</option>
+        </select>
+    </div>
+    <div class="form-group input-group col-md-12">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-phone"></i></span>
+        </div>
+        <input [(ngModel)]="cellNo" type="text" class="form-control" placeholder="Cell No" (keyup)="cellNoKeyUp()"/>
+    </div>
+    <div class="form-group col-md-12">
+        <textarea [(ngModel)]="message" class="form-control input-sm " type="textarea" id="message"
+            placeholder="Message" maxlength="2000" rows="7"></textarea>       
+    </div>
     <div class="form-group col-md-2">
-        <button class="form-control input-sm btn btn-success" id="btnSubmit" name="btnSubmit" style="height:35px"> Send</button>
+        <button [disabled]="disableModel.sendButton" class="form-control input-sm btn btn-success" id="btnSubmit" name="btnSubmit"
+            style="height:35px" (click)="send()"> Send</button>
     </div>
 </div>

@@ -24,6 +24,12 @@ export class ChatSessionService {
         return this.chatSessions.find(find => find.chatSessionId === chatSessionId);
     }
 
+    getExistingChatSession(user1Id, user2Id) {
+        return this.chatSessions.find(chatSession =>
+            chatSession.user1Id === user1Id && chatSession.user2Id === user2Id ||
+            chatSession.user1Id === user2Id && chatSession.user2Id === user1Id);
+    }
+
     add(chatSession: ChatSession) {
         this.chatSessions.push(chatSession);
     }
@@ -40,5 +46,11 @@ export class ChatSessionService {
 
     reset() {
         this.chatSessions = CHATSESSIONS;
+    }
+
+    chatSessionExist(user1Id, user2Id) {
+        return this.chatSessions.some(chatSession =>
+            chatSession.user1Id === user1Id && chatSession.user2Id === user2Id ||
+            chatSession.user1Id === user2Id && chatSession.user2Id === user1Id);
     }
 }

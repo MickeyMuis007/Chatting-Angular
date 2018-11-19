@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppComponent } from './app.component';
 import { ChatComponent } from './components/chat/chat.component';
@@ -26,7 +28,9 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
     BrowserModule,
     AppRoutingModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule, // Required animations module for ToastrModule
+    ToastrModule.forRoot()  // ToastrModule added
   ],
   providers: [],
   bootstrap: [AppComponent]

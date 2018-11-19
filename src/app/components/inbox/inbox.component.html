@@ -1,9 +1,14 @@
 <div class="container-fluid">
     <h3 class=" text-center">{{ title }}</h3>
-    <select [(ngModel)]="selectedUser" (change)="userChanged($event)">
-        <option *ngFor="let user of users" value="{{user.userId}}">{{user.name}}</option>     
-    </select>
-    
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-user"></i></span>
+        </div>
+        <select [(ngModel)]="selectedUser" (change)="userChanged($event)" class="custom-select col-md-1">
+            <option *ngFor="let user of users" value="{{user.userId}}">{{user.name}}</option>
+        </select>
+    </div>
+    <br/>
     <div class="messaging">
         <div class="inbox_msg">
             <div class="inbox_people">
@@ -20,8 +25,7 @@
                     </div>
                 </div>
                 <div class="inbox_chat">
-                    <button *ngFor="let chatSession of chatSessions" class="chat_list btn btn-info" 
-                        (click)="chatSessionSelection(chatSession, $event)">
+                    <button *ngFor="let chatSession of chatSessions" class="chat_list btn btn-info" (click)="chatSessionSelection(chatSession, $event)">
                         <div class="chat_people">
                             <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
                             </div>
@@ -63,7 +67,7 @@
                 </div>
                 <div [hidden]="hideModel.message" class="type_msg">
                     <div class="input_msg_write">
-                        <input type="text" class="write_msg" placeholder="Type a message" [(ngModel)]="message" />
+                        <input type="text" class="write_msg" placeholder="Type a message" [(ngModel)]="message"  (keyup.enter)="sendMessage()" />
                         <button [disabled]="!message" class="msg_send_btn" (click)="sendMessage()"><i class="fa fa-paper-plane-o"></i></button>
                     </div>
                 </div>

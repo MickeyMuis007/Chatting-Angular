@@ -36,6 +36,7 @@ export class InboxComponent implements OnInit {
      *************/
     //#region properties
 
+    // TODO: Create models for prorpeties
     title: string;
     message: string;
     chatSessions: ChatSession[];
@@ -78,10 +79,12 @@ export class InboxComponent implements OnInit {
     sendMessage() {
         console.log('\nevent: sendMessage()');
 
-        const chat = this.createChat();
-        this.chatService.add(chat);
-        this.chats = this.chatService.getChatFromChatSession(this.chatSession.chatSessionId);
-        this.message = '';                                                                  // Clear message
+        if (this.message) {
+            const chat = this.createChat();
+            this.chatService.add(chat);
+            this.chats = this.chatService.getChatFromChatSession(this.chatSession.chatSessionId);
+            this.message = '';
+        }
     }
 
     //#endregion events
@@ -139,8 +142,8 @@ export class InboxComponent implements OnInit {
         console.log('Message: ' + this.message);
         console.log('Sender Id(Current User):' + this.currentUser.userId + ' - ' + this.currentUser.name);
         console.log('Receiver Id:' + (this.chatSession.user1Id === this.currentUser.userId
-             ? (this.chatSession.user2Id + ' - ' + this.chatSession.user2.name)
-             : (this.chatSession.user1Id + ' - ' + this.chatSession.user1.name)));
+            ? (this.chatSession.user2Id + ' - ' + this.chatSession.user2.name)
+            : (this.chatSession.user1Id + ' - ' + this.chatSession.user1.name)));
 
         const chat: Chat = {
             chatId: (this.chats.length + 2),

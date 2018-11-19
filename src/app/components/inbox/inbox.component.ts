@@ -45,7 +45,8 @@ export class InboxComponent implements OnInit {
     users: User[];
     selectedUser: any;
     hideModel: any;
-    chatSession: ChatSession;
+    selectedChatSession: ChatSession;
+    selectedChatSessionId: number;
     messengerName: string;
 
     //#endregion properties
@@ -64,7 +65,8 @@ export class InboxComponent implements OnInit {
         console.log('\nevent: chatSessionSelection()');
 
         this.chats = this.chatService.getChatFromChatSession(chatSession.chatSessionId);
-        this.chatSession = chatSession;
+        this.selectedChatSession = chatSession;
+        this.selectedChatSessionId = chatSession.chatSessionId;
         this.setMessengerName();
         this.showMessageInput();
     }
@@ -82,7 +84,7 @@ export class InboxComponent implements OnInit {
         if (this.message) {
             const chat = this.createChat();
             this.chatService.add(chat);
-            this.chats = this.chatService.getChatFromChatSession(this.chatSession.chatSessionId);
+            this.chats = this.chatService.getChatFromChatSession(this.selectedChatSession.chatSessionId);
             this.message = '';
         }
     }
@@ -111,8 +113,9 @@ export class InboxComponent implements OnInit {
 
         this.hideMessageInput();
         this.chats = [];
-        this.chatSession = null;
+        this.selectedChatSession = null;
         this.messengerName = '';
+        this.selectedChatSessionId = -1;
     }
 
     private createHideModel() {
@@ -138,20 +141,22 @@ export class InboxComponent implements OnInit {
 
     private createChat(): Chat {
         // Displaying info required to save chat
-        console.log('Chat Session Id:  ' + this.chatSession.chatSessionId);
+        console.log('Chat Session Id:  ' + this.selectedChatSession.chatSessionId);
         console.log('Message: ' + this.message);
         console.log('Sender Id(Current User):' + this.currentUser.userId + ' - ' + this.currentUser.name);
-        console.log('Receiver Id:' + (this.chatSession.user1Id === this.currentUser.userId
-            ? (this.chatSession.user2Id + ' - ' + this.chatSession.user2.name)
-            : (this.chatSession.user1Id + ' - ' + this.chatSession.user1.name)));
+        console.log('Receiver Id:' + (this.selectedChatSession.user1Id === this.currentUser.userId
+            ? (this.selectedChatSession.user2Id + ' - ' + this.selectedChatSession.user2.name)
+            : (this.selectedChatSession.user1Id + ' - ' + this.selectedChatSession.user1.name)));
 
         const chat: Chat = {
             chatId: (this.chatService.get().length + 2),
-            chatSessionId: this.chatSession.chatSessionId,
+            chatSessionId: this.selectedChatSession.chatSessionId,
             senderId: this.currentUser.userId,
             sender: this.currentUser,
-            receiverId: (this.chatSession.user1Id === this.currentUser.userId ? this.chatSession.user2Id : this.chatSession.user1Id),
-            receiver: (this.chatSession.user1Id === this.currentUser.userId ? this.chatSession.user2 : this.chatSession.user1),
+            receiverId: (this.selectedChatSession.user1Id === this.currentUser.userId ?
+                this.selectedChatSession.user2Id : this.selectedChatSession.user1Id),
+            receiver: (this.selectedChatSession.user1Id === this.currentUser.userId ?
+                this.selectedChatSession.user2 : this.selectedChatSession.user1),
             dateUpdated: new Date(),
             message: this.message
         };
@@ -160,9 +165,9 @@ export class InboxComponent implements OnInit {
     }
 
     private setMessengerName() {
-        this.messengerName = (this.chatSession.user1Id === this.currentUser.userId
-            ? this.chatSession.user2.name
-            : this.chatSession.user1.name);
+        this.messengerName = (this.selectedChatSession.user1Id === this.currentUser.userId
+            ? this.selectedChatSession.user2.name
+            : this.selectedChatSession.user1.name);
     }
 
     //#endregion methods

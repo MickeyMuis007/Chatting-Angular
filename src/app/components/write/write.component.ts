@@ -238,7 +238,7 @@ export class WriteComponent implements OnInit {
     private validateCellNo() {
         let valid = false;
         const isNumber = !isNaN(Number(this.cellNo));
-        if (isNumber) {
+        if (isNumber && this.cellNo.length === 10) {
             valid = true;
             console.log('Cell No valid');
         } else {

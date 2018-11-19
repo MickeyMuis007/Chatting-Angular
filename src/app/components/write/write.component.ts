@@ -47,7 +47,8 @@ export class WriteComponent implements OnInit {
     title: string;
     users: User[];
     senderId: any;
-    selectedUserId: any;
+    sender: User;
+    currentUserId: any;
     currentUser: User;
     disableModel: any;                  // Disable model will be used for all disabling of components.
     message: string;
@@ -65,8 +66,8 @@ export class WriteComponent implements OnInit {
         console.log('\nevent: ngOnInit()');
 
         this.users = this.userService.get();
-        this.selectedUserId = 1;
-        this.currentUser = this.userService.getUser(this.selectedUserId);
+        this.currentUserId = 1;
+        this.currentUser = this.userService.getUser(this.currentUserId);
 
         // Create disable model that will be used for all disabling components. Set all disabling to default state.
         this.createDisableModel();
@@ -78,7 +79,7 @@ export class WriteComponent implements OnInit {
     selectedUserChanged() {
         console.log('\nevent: selectedUserChanged() -> Selected User Changed');
 
-        this.currentUser = this.userService.getUser(Number(this.selectedUserId));
+        this.currentUser = this.userService.getUser(Number(this.currentUserId));
 
         this.validateSendButton();
         this.chatSessionExist();
@@ -87,6 +88,7 @@ export class WriteComponent implements OnInit {
     senderChanged() {
         console.log('\nevent: senderChanged() -> Sender Changed');
 
+        this.sender = this.userService.getUser(Number(this.senderId));
         this.validateSendButton();
         this.chatSessionExist();
     }
@@ -106,9 +108,12 @@ export class WriteComponent implements OnInit {
             if (this.chatSessionExist()) {
                 this.getChatSession();                      // If chat session exist. Then first get chat session before one can be created
                 this.chatService.add(this.createChat());    // Create and add chat and add to list. Requires chatSession
-                this.toastr.success('Message was succesfully send', 'Send');
+                this.toastr.success('Message was succesfully send to ' + this.sender.name, 'Send');
             } else {
-                this.toastr.error('Message fail to send', 'Failed');
+                this.chatSessionService.add(this.createChatSession());
+                this.getChatSession();
+                this.chatService.add(this.createChat());
+                this.toastr.success('Message was succesfully send to ' + this.sender.name, 'Send');
             }
             this.setDefaultState();
         }
@@ -189,6 +194,17 @@ export class WriteComponent implements OnInit {
             message: this.message
         };
         return chat;
+    }
+
+    private createChatSession(): ChatSession {
+        const chatSession: ChatSession = {
+            chatSessionId: (this.chatSessionService.getAll().length + 2),
+            user1: this.currentUser,
+            user1Id: this.currentUser.userId,
+            user2: this.sender,
+            user2Id: this.sender.userId
+        };
+        return chatSession;
     }
     //#endregion method
 

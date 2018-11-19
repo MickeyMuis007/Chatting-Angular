@@ -3,7 +3,7 @@
     <div class="input-group-prepend">
         <span class="input-group-text"><i class="fa fa-user"></i></span>
     </div>
-    <select [(ngModel)]="selectedUserId" (change)="selectedUserChanged($event)" class="custom-select col-md-1">
+    <select [(ngModel)]="currentUserId" (change)="selectedUserChanged($event)" class="custom-select col-md-1">
         <option *ngFor="let user of users" value="{{user.userId}}">{{user.name}}</option>
     </select>
 </div>

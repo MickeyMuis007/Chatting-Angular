@@ -146,7 +146,7 @@ export class InboxComponent implements OnInit {
             : (this.chatSession.user1Id + ' - ' + this.chatSession.user1.name)));
 
         const chat: Chat = {
-            chatId: (this.chats.length + 2),
+            chatId: (this.chatService.get().length + 2),
             chatSessionId: this.chatSession.chatSessionId,
             senderId: this.currentUser.userId,
             sender: this.currentUser,

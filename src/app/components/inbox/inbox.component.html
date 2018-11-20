@@ -1,83 +1,76 @@
-<div class="container-fluid">
-    <h3 class=" text-center">{{ title }}</h3>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <span class="input-group-text"><i class="fa fa-user"></i></span>
-        </div>
-        <select [(ngModel)]="selectedUser" (change)="userChanged($event)" class="custom-select col-md-1">
-            <option *ngFor="let user of users" value="{{user.userId}}">{{user.name}}</option>
-        </select>
+<h3 class=" text-center">{{ title }}</h3>
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="input-group-text"><i class="fa fa-user"></i></span>
     </div>
-    <br />
-    <div class="messaging">
-        <div class="inbox_msg">
-            <div class="inbox_people">
-                <div class="headind_srch">
-                    <div class="recent_heading">
-                        <h4>Recent</h4>
-                    </div>
-                    <div class="srch_bar">
-                        <div class="stylish-input-group">
-                            <input type="text" class="search-bar" placeholder="Search">
-                            <span class="input-group-addon">
-                                <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
-                            </span> </div>
-                    </div>
+    <select [(ngModel)]="selectedUser" (change)="userChanged($event)" class="custom-select col-md-1">
+        <option *ngFor="let user of users" value="{{user.userId}}">{{user.name}}</option>
+    </select>
+</div>
+<br />
+<div class="messaging">
+    <div class="inbox_msg">
+        <div class="inbox_people">
+            <div class="headind_srch">
+                <div class="recent_heading">
+                    <h4>Recent</h4>
                 </div>
-                <div class="inbox_chat">                    
-                    <li *ngFor="let chatSession of chatSessions" class="chat_list btn btn-info" (click)="chatSessionSelection(chatSession, $event)"
-                        [ngClass]="{'active_chat': selectedChatSessionId === chatSession.chatSessionId}" >
-                        <div class="chat_people">
-                            <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
-                            </div>
-                            <div class="chat_ib">
-                                <h5 *ngIf="chatSession.user1Id === currentUser.userId">{{ chatSession.user2.name }}<span
-                                        class="chat_date">Dec 25</span></h5>
-                                <h5 *ngIf="chatSession.user2Id === currentUser.userId">{{ chatSession.user1.name }}<span
-                                        class="chat_date">Dec 25</span></h5>
-                                <p>Test, which is a new approach to have all solutions
-                                    astrology under one roof.</p>
-                            </div>
-                        </div>
-                    </li>
+                <div class="srch_bar">
+                    <div class="stylish-input-group">
+                        <input type="text" class="search-bar" placeholder="Search">
+                        <span class="input-group-addon">
+                            <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
+                        </span> </div>
                 </div>
             </div>
-            <div class="mesgs">
-                <h3>{{ messengerName }}</h3>
-                <div class="msg_history">
-                    <div *ngFor="let chat of chats">
-                        <div *ngIf="chat.receiverId === currentUser.userId" class="incoming_msg">
-                            <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png"
-                                    alt="sunil"></div>
-                            <div class="received_msg">
-                                <div class="received_withd_msg">
-                                    <small>{{ chat.sender.name }}</small>
-                                    <p>{{ chat.message }}</p>
-                                    <span class="time_date"> {{ chat.dateUpdated }}</span>
-                                </div>
-                            </div>
+            <div class="inbox_chat">
+                <li *ngFor="let chatSession of chatSessions" class="chat_list btn btn-info" (click)="chatSessionSelection(chatSession, $event)"
+                    [ngClass]="{'active_chat': selectedChatSessionId === chatSession.chatSessionId}">
+                    <div class="chat_people">
+                        <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
                         </div>
-                        <div *ngIf="chat.senderId === currentUser.userId" class="outgoing_msg">
-                            <div class="sent_msg">
-                                <small>{{ "Me: " + chat.sender.name }}</small>
+                        <div class="chat_ib">
+                            <h5 *ngIf="chatSession.user1Id === currentUser.userId">{{ chatSession.user2.name }}<span
+                                    class="chat_date">Dec 25</span></h5>
+                            <h5 *ngIf="chatSession.user2Id === currentUser.userId">{{ chatSession.user1.name }}<span
+                                    class="chat_date">Dec 25</span></h5>
+                            <p>Test, which is a new approach to have all solutions
+                                astrology under one roof.</p>
+                        </div>
+                    </div>
+                </li>
+            </div>
+        </div>
+        <div class="mesgs">
+            <h3>{{ messengerName }}</h3>
+            <div class="msg_history">
+                <div *ngFor="let chat of chats">
+                    <div *ngIf="chat.receiverId === currentUser.userId" class="incoming_msg">
+                        <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>
+                        <div class="received_msg">
+                            <div class="received_withd_msg">
+                                <small>{{ chat.sender.name }}</small>
                                 <p>{{ chat.message }}</p>
                                 <span class="time_date"> {{ chat.dateUpdated }}</span>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div [hidden]="hideModel.message" class="type_msg">
-                    <div class="input_msg_write">
-                        <input type="text" class="write_msg" placeholder="Type a message" [(ngModel)]="message"
-                            (keyup.enter)="sendMessage()" />
-                        <button [disabled]="!message" class="msg_send_btn" (click)="sendMessage()"><i class="fa fa-paper-plane-o"></i></button>
+                    <div *ngIf="chat.senderId === currentUser.userId" class="outgoing_msg">
+                        <div class="sent_msg">
+                            <small>{{ "Me: " + chat.sender.name }}</small>
+                            <p>{{ chat.message }}</p>
+                            <span class="time_date"> {{ chat.dateUpdated }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div [hidden]="hideModel.message" class="type_msg">
+                <div class="input_msg_write">
+                    <input type="text" class="write_msg" placeholder="Type a message" [(ngModel)]="message"
+                        (keyup.enter)="sendMessage()" />
+                    <button [disabled]="!message" class="msg_send_btn" (click)="sendMessage()"><i class="fa fa-paper-plane-o"></i></button>
+                </div>
+            </div>
         </div>
-
-
-        <p class="text-center top_spac"> Design by <a target="_blank" href="#">Sunil Rajput</a></p>
-
     </div>
 </div>

@@ -24,18 +24,17 @@
                 </div>
             </div>
             <div class="inbox_chat">
-                <li *ngFor="let chatSession of chatSessions" class="chat_list btn btn-info" (click)="chatSessionSelection(chatSession, $event)"
+                <li *ngFor="let chatSession of chatSessions" class="chat_list btn btn-info col-md-12" (click)="chatSessionSelection(chatSession, $event)"
                     [ngClass]="{'active_chat': selectedChatSessionId === chatSession.chatSessionId}">
                     <div class="chat_people">
                         <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
                         </div>
                         <div class="chat_ib">
                             <h5 *ngIf="chatSession.user1Id === currentUser.userId">{{ chatSession.user2.name }}<span
-                                    class="chat_date">Dec 25</span></h5>
+                                    class="chat_date">{{ chatSession.lastMessageDate }}</span></h5>
                             <h5 *ngIf="chatSession.user2Id === currentUser.userId">{{ chatSession.user1.name }}<span
-                                    class="chat_date">Dec 25</span></h5>
-                            <p>Test, which is a new approach to have all solutions
-                                astrology under one roof.</p>
+                                    class="chat_date">{{ chatSession.lastMessageDate }}</span></h5>
+                            <p>{{ chatSession.lastMessage }}</p>
                         </div>
                     </div>
                 </li>

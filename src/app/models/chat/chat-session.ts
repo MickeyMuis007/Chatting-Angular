@@ -6,4 +6,6 @@ export class ChatSession {
     user2Id: number;
     user1: User;
     user2: User;
+    lastMessageDate?: string;
+    lastMessage?: string;
 }

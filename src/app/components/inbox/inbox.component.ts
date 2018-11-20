@@ -5,7 +5,7 @@
  */
 
 /* Angular Import */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild } from '@angular/core';
 
 /* Service Import */
 import { ChatSessionService } from 'src/app/services/chat/chat-session.service';
@@ -22,7 +22,7 @@ import { User } from 'src/app/models/chat/user.model';
     templateUrl: './inbox.component.html',
     styleUrls: ['./inbox.component.css']
 })
-export class InboxComponent implements OnInit {
+export class InboxComponent implements OnInit, AfterViewChecked {
 
     constructor(
         private chatSessionService: ChatSessionService,
@@ -49,6 +49,8 @@ export class InboxComponent implements OnInit {
     selectedChatSessionId: number;
     messengerName: string;
 
+    @ViewChild('msgHistory') private myScrollContainer: ElementRef;
+
     //#endregion properties
 
     /*********
@@ -59,6 +61,16 @@ export class InboxComponent implements OnInit {
     ngOnInit() {
         console.log('\nevent: ngOnInit()');
         this.reset();
+    }
+
+    ngAfterViewChecked() {
+        this.scrollToBottom();
+    }
+
+    scrollToBottom() {
+        try {
+            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+        } catch (err) { }
     }
 
     chatSessionSelection(chatSession: ChatSession) {

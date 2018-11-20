@@ -43,7 +43,7 @@
         </div>
         <div class="mesgs">
             <h3>{{ messengerName }}</h3>
-            <div class="msg_history">
+            <div #msgHistory class="msg_history">
                 <div *ngFor="let chat of chats">
                     <div *ngIf="chat.receiverId === currentUser.userId" class="incoming_msg">
                         <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>

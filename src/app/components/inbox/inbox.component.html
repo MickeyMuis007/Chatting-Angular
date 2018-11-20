@@ -24,9 +24,9 @@
                 </div>
             </div>
             <div class="inbox_chat">
-                <li *ngFor="let chatSession of chatSessions" class="chat_list btn btn-info col-md-12" (click)="chatSessionSelection(chatSession, $event)"
-                    [ngClass]="{'active_chat': selectedChatSessionId === chatSession.chatSessionId,
-                     'unread': !checkRead(chatSession)}">
+                <li *ngFor="let chatSession of chatSessions" class="chat_list col-md-12" (click)="chatSessionSelection(chatSession, $event)"
+                    [ngClass]="{'active_chat': selectedChatSessionId === chatSession.chatSessionId}">
+                     <i *ngIf="!checkRead(chatSession)" class="fa fa-commenting unread_icon"></i>
                     <div class="chat_people">
                         <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
                         </div>

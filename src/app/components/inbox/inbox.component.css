@@ -54,12 +54,13 @@ img{ max-width:100%;}
 .chat_list {
   border-bottom: 1px solid #c4c4c4;
   margin: 0;
-  padding: 18px 16px 10px;
+  padding: 10px 10px 10px;
   background-color: aliceblue;
+  list-style-type: none;
 }
 .inbox_chat { height: 550px; overflow-y: scroll;}
 
-.active_chat{ background:cyan;}
+.active_chat{ background:lightcyan;}
 
 .incoming_msg_img {
   display: inline-block;
@@ -135,6 +136,7 @@ img{ max-width:100%;}
   overflow-y: auto;
 }
 
-.unread {
-  background-color:khaki; 
+.unread_icon {
+  float: right;
+  color:red; 
 }

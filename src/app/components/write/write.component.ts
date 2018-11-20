@@ -227,7 +227,6 @@ export class WriteComponent implements OnInit {
             if (this.senderId === -1 && this.cellNo) {
                 sender = {
                     userId: Number(this.cellNo),
-                    contactNo: this.cellNo,
                     name: this.cellNo,
                     displayName: this.cellNo
                 };

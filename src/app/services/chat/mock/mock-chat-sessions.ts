@@ -4,8 +4,8 @@ import { USERS } from './mock-users';
 export const CHATSESSIONS: ChatSession[] = [
     { chatSessionId: 1, user1Id: USERS[0].userId, user2Id: USERS[1].userId,
         user1: USERS[0], user2: USERS[1], lastMessageDate: new Date('16 Nov 2018').toDateString(),
-        lastMessage: 'Good thanks John and you?' },
+        lastMessage: 'Good thanks John and you?', user1Read: false, user2Read: false },
     { chatSessionId: 2, user1Id: USERS[1].userId, user2Id: USERS[2].userId,
         user1: USERS[1], user2: USERS[2], lastMessageDate: new Date('16 Nov 2018').toDateString(),
-        lastMessage: 'Yo James, where you at' },
+        lastMessage: 'Yo James, where you at', user1Read: false, user2Read: false },
 ];

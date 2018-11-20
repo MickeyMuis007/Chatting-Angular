@@ -183,10 +183,11 @@ export class WriteComponent implements OnInit {
 
     private chatSessionExist() {
         console.log('method: chatSessionExist()');
+        const senderId = !this.sender ? -1 : this.sender.userId;
         console.log('Chat Session Exist: ' +
-            this.chatSessionService.chatSessionExist(Number(this.currentUser.userId), Number(this.sender.userId)));
+            this.chatSessionService.chatSessionExist(Number(this.currentUser.userId), Number(senderId)));
 
-        return this.chatSessionService.chatSessionExist(Number(this.currentUser.userId), Number(this.sender.userId));
+        return this.chatSessionService.chatSessionExist(Number(this.currentUser.userId), Number(senderId));
     }
 
     private getChatSession() {
@@ -217,7 +218,9 @@ export class WriteComponent implements OnInit {
             user1: this.currentUser,
             user1Id: this.currentUser.userId,
             user2: this.sender,
-            user2Id: this.sender.userId
+            user2Id: this.sender.userId,
+            user1Read: true,
+            user2Read: false
         };
         return chatSession;
     }

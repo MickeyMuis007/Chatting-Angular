@@ -59,7 +59,7 @@ img{ max-width:100%;}
 }
 .inbox_chat { height: 550px; overflow-y: scroll;}
 
-.active_chat{ background:lightgoldenrodyellow;}
+.active_chat{ background:cyan;}
 
 .incoming_msg_img {
   display: inline-block;
@@ -133,4 +133,8 @@ img{ max-width:100%;}
 .msg_history {
   height: 516px;
   overflow-y: auto;
+}
+
+.unread {
+  background-color:khaki; 
 }

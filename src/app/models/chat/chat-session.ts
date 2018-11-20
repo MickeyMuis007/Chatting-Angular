@@ -8,4 +8,6 @@ export class ChatSession {
     user2: User;
     lastMessageDate?: string;
     lastMessage?: string;
+    user1Read: boolean;
+    user2Read: boolean;
 }

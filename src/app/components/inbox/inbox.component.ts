@@ -67,6 +67,8 @@ export class InboxComponent implements OnInit {
         this.chats = this.chatService.getChatFromChatSession(chatSession.chatSessionId);
         this.selectedChatSession = chatSession;
         this.selectedChatSessionId = chatSession.chatSessionId;
+
+        this.markAsRead();              // first need to get selected chatSession before marking as read
         this.setMessengerName();
         this.showMessageInput();
     }
@@ -86,8 +88,20 @@ export class InboxComponent implements OnInit {
             const chat = this.createChat();
             this.chatService.add(chat);
             this.chats = this.chatService.getChatFromChatSession(this.selectedChatSession.chatSessionId);
+            this.markReceiverAsUnread();   // Mark message receiver as unread
             this.message = '';
         }
+    }
+
+    // Find current users read status
+    checkRead(chatSession: ChatSession) {
+        let read = false;
+        if (this.currentUser.userId === chatSession.user1Id) {
+            read = chatSession.user1Read;
+        } else {
+            read = chatSession.user2Read;
+        }
+        return read;
     }
 
     //#endregion events
@@ -175,6 +189,27 @@ export class InboxComponent implements OnInit {
         this.selectedChatSession.lastMessage = this.message;
         this.selectedChatSession.lastMessageDate = new Date().toDateString();
         this.chatSessionService.update(this.selectedChatSession);
+    }
+
+    private updateSelectedChatSession() {
+        this.chatSessionService.update(this.selectedChatSession);
+    }
+
+    private markAsRead() {
+        if (this.selectedChatSession.user1Id === this.currentUser.userId) {
+            this.selectedChatSession.user1Read = true;
+        } else {
+            this.selectedChatSession.user2Read = true;
+        }
+        this.updateSelectedChatSession();
+    }
+
+    private markReceiverAsUnread () {
+        if (this.selectedChatSession.user1Id === this.currentUser.userId) {
+            this.selectedChatSession.user2Read = false;
+        } else {
+            this.selectedChatSession.user1Read = false;
+        }
     }
 
     //#endregion methods

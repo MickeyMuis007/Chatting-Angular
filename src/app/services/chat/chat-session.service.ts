@@ -34,7 +34,14 @@ export class ChatSessionService {
         this.chatSessions.push(chatSession);
     }
 
-    update(chatSessionId: number) {
+    update(newChatSession: ChatSession) {
+        const update = this.chatSessions.find(chatSession => chatSession.chatSessionId === newChatSession.chatSessionId);
+        update.lastMessage = newChatSession.lastMessage;
+        update.lastMessageDate = newChatSession.lastMessageDate;
+        update.user1 = newChatSession.user1;
+        update.user1Id = newChatSession.user1Id;
+        update.user2 = newChatSession.user2;
+        update.user2Id = newChatSession.user2Id;
     }
 
     delete(chatSessionId: number) {

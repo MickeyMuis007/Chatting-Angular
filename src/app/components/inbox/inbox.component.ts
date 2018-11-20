@@ -82,6 +82,7 @@ export class InboxComponent implements OnInit {
         console.log('\nevent: sendMessage()');
 
         if (this.message) {
+            this.updateChatSession();
             const chat = this.createChat();
             this.chatService.add(chat);
             this.chats = this.chatService.getChatFromChatSession(this.selectedChatSession.chatSessionId);
@@ -168,6 +169,12 @@ export class InboxComponent implements OnInit {
         this.messengerName = (this.selectedChatSession.user1Id === this.currentUser.userId
             ? this.selectedChatSession.user2.name
             : this.selectedChatSession.user1.name);
+    }
+
+    private updateChatSession() {
+        this.selectedChatSession.lastMessage = this.message;
+        this.selectedChatSession.lastMessageDate = new Date().toDateString();
+        this.chatSessionService.update(this.selectedChatSession);
     }
 
     //#endregion methods

@@ -124,6 +124,7 @@ export class WriteComponent implements OnInit {
                 this.chatService.add(this.createChat());
                 this.toastr.success('Message was succesfully send to ' + this.sender.name, 'Send');
             }
+            this.updateChatSession();
             this.setDefaultState();
         }
     }
@@ -245,6 +246,12 @@ export class WriteComponent implements OnInit {
             console.log('Cell No not valid');
         }
         return valid;
+    }
+
+    private updateChatSession() {
+        this.chatSession.lastMessage = this.message;
+        this.chatSession.lastMessageDate = new Date().toDateString();
+        this.chatSessionService.update(this.chatSession);
     }
 
     //#endregion method

@@ -124,6 +124,8 @@ export class WriteComponent implements OnInit {
                 this.chatService.add(this.createChat());
                 this.toastr.success('Message was succesfully send to ' + this.sender.name, 'Send');
             }
+
+            this.addSender();               // Add sender if it's created from cell no
             this.updateChatSession();
             this.setDefaultState();
         }
@@ -251,6 +253,12 @@ export class WriteComponent implements OnInit {
         this.chatSession.lastMessage = this.message;
         this.chatSession.lastMessageDate = new Date().toDateString();
         this.chatSessionService.update(this.chatSession);
+    }
+
+    private addSender() {
+        if (this.cellNo) {
+            this.userService.add(this.sender);
+        }
     }
 
     //#endregion method

@@ -37,7 +37,6 @@ export class WriteComponent implements OnInit {
 
     //#endregion constructor
 
-
     /*************
      * Properties
      *************/
@@ -161,7 +160,7 @@ export class WriteComponent implements OnInit {
         console.log('method: validateSendButton()');
 
         if ((Number(this.senderId) !== -1 || (this.validateCellNo() && this.cellNo)) &&
-            this.currentUser.userId !== Number(this.senderId) &&
+            this.currentUser.contactNo !== Number(this.senderId) &&
             this.message) {
             this.enableSendButton();
         } else {
@@ -183,17 +182,18 @@ export class WriteComponent implements OnInit {
 
     private chatSessionExist() {
         console.log('method: chatSessionExist()');
-        const senderId = !this.sender ? -1 : this.sender.userId;
+        const senderId = !this.sender ? -1 : this.sender.contactNo;
         console.log('Chat Session Exist: ' +
-            this.chatSessionService.chatSessionExist(Number(this.currentUser.userId), Number(senderId)));
+            this.chatSessionService.chatSessionExist(Number(this.currentUser.contactNo), Number(senderId)));
 
-        return this.chatSessionService.chatSessionExist(Number(this.currentUser.userId), Number(senderId));
+        return this.chatSessionService.chatSessionExist(Number(this.currentUser.contactNo), Number(senderId));
     }
 
     private getChatSession() {
         console.log('method: getChatSesison()');
 
-        this.chatSession = this.chatSessionService.getExistingChatSession(Number(this.currentUser.userId), Number(this.sender.userId));
+        this.chatSession = this.chatSessionService
+        .getExistingChatSession(Number(this.currentUser.contactNo), Number(this.sender.contactNo));
     }
 
     private createChat(): Chat {
@@ -202,10 +202,10 @@ export class WriteComponent implements OnInit {
         const chat: Chat = {
             chatId: (this.chatService.get().length + 2),
             chatSessionId: this.chatSession.chatSessionId,
-            senderId: this.currentUser.userId,
+            senderId: this.currentUser.contactNo,
             sender: this.currentUser,
-            receiverId: (this.chatSession.user1Id === this.currentUser.userId ? this.chatSession.user2Id : this.chatSession.user1Id),
-            receiver: (this.chatSession.user1Id === this.currentUser.userId ? this.chatSession.user2 : this.chatSession.user1),
+            receiverId: (this.chatSession.user1Id === this.currentUser.contactNo ? this.chatSession.user2Id : this.chatSession.user1Id),
+            receiver: (this.chatSession.user1Id === this.currentUser.contactNo ? this.chatSession.user2 : this.chatSession.user1),
             dateUpdated: new Date(),
             message: this.message
         };
@@ -216,9 +216,9 @@ export class WriteComponent implements OnInit {
         const chatSession: ChatSession = {
             chatSessionId: (this.chatSessionService.getAll().length + 2),
             user1: this.currentUser,
-            user1Id: this.currentUser.userId,
+            user1Id: this.currentUser.contactNo,
             user2: this.sender,
-            user2Id: this.sender.userId,
+            user2Id: this.sender.contactNo,
             user1Read: true,
             user2Read: false
         };
@@ -231,7 +231,7 @@ export class WriteComponent implements OnInit {
         if (this.validateCellNo()) {
             if (this.senderId === -1 && this.cellNo) {
                 sender = {
-                    userId: Number(this.cellNo),
+                    contactNo: Number(this.cellNo),
                     name: this.cellNo,
                     displayName: this.cellNo
                 };

@@ -4,7 +4,7 @@
         <span class="input-group-text"><i class="fa fa-user"></i></span>
     </div>
     <select [(ngModel)]="currentUserId" (change)="selectedUserChanged($event)" class="custom-select col-md-1">
-        <option *ngFor="let user of users" value="{{user.userId}}">{{user.name}}</option>
+        <option *ngFor="let user of users" value="{{user.contactNo}}">{{user.name}}</option>
     </select>
 </div>
 <div class="container">
@@ -16,7 +16,7 @@
         </div>
         <select [(ngModel)]="senderId" (change)="senderChanged($event)" class="custom-select">
             <option value="-1">Contacts...</option>
-            <option *ngFor="let user of users" value="{{user.userId}}">{{user.name}}</option>
+            <option *ngFor="let user of users" value="{{user.contactNo}}">{{user.name}}</option>
         </select>
     </div>
     <div class="form-group input-group col-md-12">

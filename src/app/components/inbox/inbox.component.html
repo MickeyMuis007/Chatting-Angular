@@ -4,7 +4,7 @@
         <span class="input-group-text"><i class="fa fa-user"></i></span>
     </div>
     <select [(ngModel)]="selectedUser" (change)="userChanged($event)" class="custom-select col-md-1">
-        <option *ngFor="let user of users" value="{{user.userId}}">{{user.name}}</option>
+        <option *ngFor="let user of users" value="{{user.contactNo}}">{{user.name}}</option>
     </select>
 </div>
 <br />
@@ -31,9 +31,9 @@
                         <div class="chat_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil">
                         </div>
                         <div class="chat_ib">
-                            <h5 *ngIf="chatSession.user1Id === currentUser.userId">{{ chatSession.user2.name }}<span
+                            <h5 *ngIf="chatSession.user1Id === currentUser.contactNo">{{ chatSession.user2.name }}<span
                                     class="chat_date">{{ chatSession.lastMessageDate }}</span></h5>
-                            <h5 *ngIf="chatSession.user2Id === currentUser.userId">{{ chatSession.user1.name }}<span
+                            <h5 *ngIf="chatSession.user2Id === currentUser.contactNo">{{ chatSession.user1.name }}<span
                                     class="chat_date">{{ chatSession.lastMessageDate }}</span></h5>
                             <p>{{ chatSession.lastMessage }}</p>
                         </div>
@@ -45,7 +45,7 @@
             <h3>{{ messengerName }}</h3>
             <div #msgHistory class="msg_history">
                 <div *ngFor="let chat of chats">
-                    <div *ngIf="chat.receiverId === currentUser.userId" class="incoming_msg">
+                    <div *ngIf="chat.receiverId === currentUser.contactNo" class="incoming_msg">
                         <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"></div>
                         <div class="received_msg">
                             <div class="received_withd_msg">
@@ -55,7 +55,7 @@
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="chat.senderId === currentUser.userId" class="outgoing_msg">
+                    <div *ngIf="chat.senderId === currentUser.contactNo" class="outgoing_msg">
                         <div class="sent_msg">
                             <small>{{ "Me: " + chat.sender.name }}</small>
                             <p>{{ chat.message }}</p>

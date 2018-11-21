@@ -16,6 +16,7 @@ import { UserService } from 'src/app/services/chat/user.service';
 import { ChatSession } from 'src/app/models/chat/chat-session';
 import { Chat } from 'src/app/models/chat/chat';
 import { User } from 'src/app/models/chat/user.model';
+import { Receive } from 'src/app/models/chat/receive.model';
 
 @Component({
     selector: 'app-inbox',
@@ -87,9 +88,14 @@ export class InboxComponent implements OnInit, AfterViewChecked {
 
     userChanged() {
         console.log('\nevent: userChanged()');
+
+        console.log(this.chatSessionService.getAll());
+        console.log(this.userService.get());
+        console.log(this.chatService.get());
+
         this.clearChats();
         this.currentUser = this.userService.getUser(Number(this.selectedUser));
-        this.chatSessions = this.chatSessionService.get(this.currentUser.userId);
+        this.chatSessions = this.chatSessionService.get(this.currentUser.contactNo);
     }
 
     sendMessage() {
@@ -108,7 +114,7 @@ export class InboxComponent implements OnInit, AfterViewChecked {
     // Find current users read status
     checkRead(chatSession: ChatSession) {
         let read = false;
-        if (this.currentUser.userId === chatSession.user1Id) {
+        if (this.currentUser.contactNo === chatSession.user1Id) {
             read = chatSession.user1Read;
         } else {
             read = chatSession.user2Read;
@@ -128,9 +134,6 @@ export class InboxComponent implements OnInit, AfterViewChecked {
         console.log('method: reset()');
 
         this.users = this.userService.get();
-        this.currentUser = this.userService.getUser(1);
-        this.selectedUser = this.currentUser.userId;
-        this.chatSessions = this.chatSessionService.get(this.currentUser.userId);
 
         this.createHideModel();
     }
@@ -170,19 +173,19 @@ export class InboxComponent implements OnInit, AfterViewChecked {
         // Displaying info required to save chat
         console.log('Chat Session Id:  ' + this.selectedChatSession.chatSessionId);
         console.log('Message: ' + this.message);
-        console.log('Sender Id(Current User):' + this.currentUser.userId + ' - ' + this.currentUser.name);
-        console.log('Receiver Id:' + (this.selectedChatSession.user1Id === this.currentUser.userId
+        console.log('Sender Id(Current User):' + this.currentUser.contactNo + ' - ' + this.currentUser.name);
+        console.log('Receiver Id:' + (this.selectedChatSession.user1Id === this.currentUser.contactNo
             ? (this.selectedChatSession.user2Id + ' - ' + this.selectedChatSession.user2.name)
             : (this.selectedChatSession.user1Id + ' - ' + this.selectedChatSession.user1.name)));
 
         const chat: Chat = {
             chatId: (this.chatService.get().length + 2),
             chatSessionId: this.selectedChatSession.chatSessionId,
-            senderId: this.currentUser.userId,
+            senderId: this.currentUser.contactNo,
             sender: this.currentUser,
-            receiverId: (this.selectedChatSession.user1Id === this.currentUser.userId ?
+            receiverId: (this.selectedChatSession.user1Id === this.currentUser.contactNo ?
                 this.selectedChatSession.user2Id : this.selectedChatSession.user1Id),
-            receiver: (this.selectedChatSession.user1Id === this.currentUser.userId ?
+            receiver: (this.selectedChatSession.user1Id === this.currentUser.contactNo ?
                 this.selectedChatSession.user2 : this.selectedChatSession.user1),
             dateUpdated: new Date(),
             message: this.message
@@ -192,7 +195,7 @@ export class InboxComponent implements OnInit, AfterViewChecked {
     }
 
     private setMessengerName() {
-        this.messengerName = (this.selectedChatSession.user1Id === this.currentUser.userId
+        this.messengerName = (this.selectedChatSession.user1Id === this.currentUser.contactNo
             ? this.selectedChatSession.user2.name
             : this.selectedChatSession.user1.name);
     }
@@ -208,7 +211,7 @@ export class InboxComponent implements OnInit, AfterViewChecked {
     }
 
     private markAsRead() {
-        if (this.selectedChatSession.user1Id === this.currentUser.userId) {
+        if (this.selectedChatSession.user1Id === this.currentUser.contactNo) {
             this.selectedChatSession.user1Read = true;
         } else {
             this.selectedChatSession.user2Read = true;
@@ -216,8 +219,8 @@ export class InboxComponent implements OnInit, AfterViewChecked {
         this.updateSelectedChatSession();
     }
 
-    private markReceiverAsUnread () {
-        if (this.selectedChatSession.user1Id === this.currentUser.userId) {
+    private markReceiverAsUnread() {
+        if (this.selectedChatSession.user1Id === this.currentUser.contactNo) {
             this.selectedChatSession.user2Read = false;
         } else {
             this.selectedChatSession.user1Read = false;

@@ -2,18 +2,28 @@ import { Injectable } from '@angular/core';
 import { ChatSession } from '../../models/chat/chat-session';
 import { CHATSESSIONS } from './mock/mock-chat-sessions';
 
+import { SmsReceiveService } from '../sms/sms-receive.service';
+import { User } from 'src/app/models/chat/user.model';
+import { Receive } from 'src/app/models/chat/receive.model';
+
 @Injectable({
     providedIn: 'root'
 })
 export class ChatSessionService {
     chatSessions: ChatSession[];
 
-    constructor() {
+    constructor(
+        private smsReceiverService: SmsReceiveService
+    ) {
         this.reset();
     }
 
-    get(userId: number) {
-        return this.chatSessions.filter(chatSession => chatSession.user1Id === userId || chatSession.user2Id === userId);
+    getReceiveTest() {
+        return this.smsReceiverService.getApi();
+    }
+
+    get(contactNo: number) {
+        return this.chatSessions.filter(chatSession => chatSession.user1Id === contactNo || chatSession.user2Id === contactNo);
     }
 
     getAll() {
@@ -52,10 +62,60 @@ export class ChatSessionService {
     }
 
     reset() {
-        this.chatSessions = CHATSESSIONS;
+        this.clear();
+        this.mapToChatSession();
+        //        this.chatSessions = CHATSESSIONS;
     }
 
     chatSessionExist(user1Id, user2Id) {
+        return this.chatSessions.some(chatSession =>
+            chatSession.user1Id === user1Id && chatSession.user2Id === user2Id ||
+            chatSession.user1Id === user2Id && chatSession.user2Id === user1Id);
+    }
+
+    private mapToChatSession() {
+        this.smsReceiverService.getApi().toPromise().then((res: Receive[]) => {
+            let count = 0;
+            res.forEach((item) => {
+                if (!this.checkChatSessionExist(Number(item.fromCell), Number(item.toCell))) {
+                    this.chatSessions.push(this.createChatSession(item, ++count));
+                }
+            });
+        });
+
+        // const receives = this.smsReceiverService.get();
+        // let count = 0;
+        // receives.forEach((item) => {
+        //     if (!this.checkChatSessionExist(Number(item.fromCell), Number(item.toCell))) {
+        //         this.chatSessions.push(this.createChatSession(item, ++count));
+        //     }
+        // });
+    }
+
+    private createUser(contactNo: string, name: string): User {
+        return {
+            contactNo: Number(contactNo),
+            name: name,
+            displayName: name
+        };
+    }
+
+    private createChatSession(receive: Receive, chatSessionId) {
+        const chatSession: ChatSession = {
+            chatSessionId: chatSessionId,
+            user1: this.createUser(receive.fromCell, receive.fromCell),
+            user1Id: Number(receive.fromCell),
+            user2: this.createUser(receive.toCell, receive.fromCell),
+            user2Id: Number(receive.toCell),
+            user1Read: false,
+            user2Read: false,
+            lastMessage: receive.message,
+            lastMessageDate: new Date(receive.dateReceived).toDateString()
+        };
+        return chatSession;
+    }
+
+    private checkChatSessionExist(user1Id, user2Id) {
         return this.chatSessions.some(chatSession =>
             chatSession.user1Id === user1Id && chatSession.user2Id === user2Id ||
             chatSession.user1Id === user2Id && chatSession.user2Id === user1Id);

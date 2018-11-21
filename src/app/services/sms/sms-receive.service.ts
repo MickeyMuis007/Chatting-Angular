@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { RECEIVES } from './mock/mock-receives';
-import { Receive } from 'src/app/models/chat/receive.model';
+import { Receive } from 'src/app/models/sms/receive.model';
 
 @Injectable({
     providedIn: 'root'

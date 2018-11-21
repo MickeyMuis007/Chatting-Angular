@@ -255,6 +255,8 @@ export class WriteComponent implements OnInit {
     private updateChatSession() {
         this.chatSession.lastMessage = this.message;
         this.chatSession.lastMessageDate = new Date().toDateString();
+        this.chatSession.user1Read = this.chatSession.user1Id === this.currentUser.contactNo ? true : false;
+        this.chatSession.user2Read = this.chatSession.user2Id === this.currentUser.contactNo ? true : false;
         this.chatSessionService.update(this.chatSession);
     }
 

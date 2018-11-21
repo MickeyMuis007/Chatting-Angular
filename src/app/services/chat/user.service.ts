@@ -3,7 +3,7 @@ import { User } from '../../models/chat/user.model';
 import { USERS } from './mock/mock-users';
 
 import { SmsReceiveService } from '../sms/sms-receive.service';
-import { Receive } from 'src/app/models/chat/receive.model';
+import { Receive } from 'src/app/models/sms/receive.model';
 
 @Injectable({
     providedIn: 'root'

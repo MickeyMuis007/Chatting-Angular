@@ -5,7 +5,7 @@ import { CHATS } from './mock/mock-chats';
 import { SmsReceiveService } from '../sms/sms-receive.service';
 import { ChatSessionService } from './chat-session.service';
 
-import { Receive } from 'src/app/models/chat/receive.model';
+import { Receive } from 'src/app/models/sms/receive.model';
 import { User } from 'src/app/models/chat/user.model';
 
 @Injectable({

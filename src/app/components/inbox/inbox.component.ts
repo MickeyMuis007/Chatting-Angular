@@ -16,7 +16,7 @@ import { UserService } from 'src/app/services/chat/user.service';
 import { ChatSession } from 'src/app/models/chat/chat-session';
 import { Chat } from 'src/app/models/chat/chat';
 import { User } from 'src/app/models/chat/user.model';
-import { Receive } from 'src/app/models/chat/receive.model';
+import { Receive } from 'src/app/models/sms/receive.model';
 
 @Component({
     selector: 'app-inbox',

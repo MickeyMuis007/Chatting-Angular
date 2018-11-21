@@ -6,7 +6,7 @@ import { DateConvertor } from '../functions/date-convertor';
 
 import { ChatSession } from '../../models/chat/chat-session';
 import { User } from 'src/app/models/chat/user.model';
-import { Receive } from 'src/app/models/chat/receive.model';
+import { Receive } from 'src/app/models/sms/receive.model';
 
 @Injectable({
     providedIn: 'root'
@@ -55,6 +55,8 @@ export class ChatSessionService {
         update.user1Id = newChatSession.user1Id;
         update.user2 = newChatSession.user2;
         update.user2Id = newChatSession.user2Id;
+        update.user1Read = newChatSession.user1Read;
+        update.user2Read = newChatSession.user2Read;
     }
 
     delete(chatSessionId: number) {

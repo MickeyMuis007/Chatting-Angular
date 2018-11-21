@@ -1,4 +1,4 @@
-import { Receive } from 'src/app/models/chat/receive.model';
+import { Receive } from 'src/app/models/sms/receive.model';
 
 export const RECEIVES: Receive[] = [
     { receivedSMSId: 1, fromCell: '0213233234', toCell: '0784342525', message: 'Hi',

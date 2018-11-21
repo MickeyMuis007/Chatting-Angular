@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { ChatSession } from '../../models/chat/chat-session';
 import { CHATSESSIONS } from './mock/mock-chat-sessions';
 
 import { SmsReceiveService } from '../sms/sms-receive.service';
+import { DateConvertor } from '../functions/date-convertor';
+
+import { ChatSession } from '../../models/chat/chat-session';
 import { User } from 'src/app/models/chat/user.model';
 import { Receive } from 'src/app/models/chat/receive.model';
 
@@ -13,7 +15,8 @@ export class ChatSessionService {
     chatSessions: ChatSession[];
 
     constructor(
-        private smsReceiverService: SmsReceiveService
+        private smsReceiverService: SmsReceiveService,
+        private dateConvertor: DateConvertor
     ) {
         this.reset();
     }
@@ -110,7 +113,7 @@ export class ChatSessionService {
             user1Read: false,
             user2Read: false,
             lastMessage: receive.message,
-            lastMessageDate: new Date(receive.dateReceived).toDateString()
+            lastMessageDate: this.dateConvertor.convertDateReceiver(receive.dateReceiver).toDateString()
         };
         return chatSession;
     }

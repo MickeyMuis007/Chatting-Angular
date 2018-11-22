@@ -159,8 +159,9 @@ export class WriteComponent implements OnInit {
         console.log('method: validateSendButton()');
 
         if ((Number(this.senderId) !== -1 || (this.validateCellNo() && this.cellNo)) &&
-            this.currentUser.contactNo !== Number(this.senderId) &&
-            this.message) {
+            (this.currentUser ? this.currentUser.contactNo : -1) !== Number(this.senderId) &&
+            (this.currentUser ? this.currentUser.contactNo : -1) !== Number(this.cellNo) &&
+            this.message && this.currentUser) {
             this.enableSendButton();
         } else {
             this.disableSendButton();
@@ -183,9 +184,9 @@ export class WriteComponent implements OnInit {
         console.log('method: chatSessionExist()');
         const senderId = !this.sender ? -1 : this.sender.contactNo;
         console.log('Chat Session Exist: ' +
-            this.chatSessionService.chatSessionExist(Number(this.currentUser.contactNo), Number(senderId)));
+            this.chatSessionService.chatSessionExist(Number((this.currentUser ? this.currentUser.contactNo : -1)), Number(senderId)));
 
-        return this.chatSessionService.chatSessionExist(Number(this.currentUser.contactNo), Number(senderId));
+        return this.chatSessionService.chatSessionExist(Number((this.currentUser ? this.currentUser.contactNo : -1)), Number(senderId));
     }
 
     private getChatSession() {

@@ -24,14 +24,6 @@ import { Receive } from 'src/app/models/sms/receive.model';
     styleUrls: ['./inbox.component.css']
 })
 export class InboxComponent implements OnInit, AfterViewChecked {
-
-    constructor(
-        private chatSessionService: ChatSessionService,
-        private chatService: ChatService,
-        private userService: UserService) {
-        this.title = 'Inbox';
-    }
-
     /*************
      * Properties
      *************/
@@ -53,6 +45,20 @@ export class InboxComponent implements OnInit, AfterViewChecked {
     @ViewChild('msgHistory') private myScrollContainer: ElementRef;
 
     //#endregion properties
+
+    /**************
+     * Constructor
+     **************/
+    //#region constructor
+
+    constructor(
+        private chatSessionService: ChatSessionService,
+        private chatService: ChatService,
+        private userService: UserService) {
+        this.title = 'Inbox';
+    }
+
+    //#endregion constructor
 
     /*********
      * Events

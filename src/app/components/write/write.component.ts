@@ -20,23 +20,6 @@ import { ToastrService } from 'ngx-toastr';
     styleUrls: ['./write.component.css']
 })
 export class WriteComponent implements OnInit {
-
-    /**************
-     * Constructor
-     **************/
-    //#region constructor
-
-    constructor(
-        private userService: UserService,
-        private chatSessionService: ChatSessionService,
-        private chatService: ChatService,
-        private toastr: ToastrService
-    ) {
-        this.title = 'Write';
-    }
-
-    //#endregion constructor
-
     /*************
      * Properties
      *************/
@@ -55,6 +38,22 @@ export class WriteComponent implements OnInit {
     chatSession: ChatSession;
 
     //#endregion properties
+
+    /**************
+     * Constructor
+     **************/
+    //#region constructor
+
+    constructor(
+        private userService: UserService,
+        private chatSessionService: ChatSessionService,
+        private chatService: ChatService,
+        private toastr: ToastrService
+    ) {
+        this.title = 'Write';
+    }
+
+    //#endregion constructor
 
     /*********
      * Events

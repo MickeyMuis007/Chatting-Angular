@@ -1,26 +1,34 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+import { Sms } from 'src/app/models/sms/sms.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SmsService {
-
-    /**
-     * Send sms requires senders phone no and a message. I'll create a send model for this
-     */
-    sendSms() {
+    private baseUrl;
+    constructor(private httpClient: HttpClient) {
+        this.baseUrl = 'https://localhost:5001/api/sms/';
     }
 
-    /**
-     * This will be message that will be recieved from the sender. Will implement signalR to trigger this event on the back-end
-     * receives sms
-     */
-    receiveSms() {
+    get() {
+        return this.httpClient.get(this.baseUrl);
     }
 
-    /**
-     * Alternative way on getting recieved sms's. Is by just to go get sms's
-     */
-    getRecievedSms() {
+    getSms(id: number) {
+        return this.httpClient.get(this.baseUrl + id);
+    }
+
+    post(addSms: Sms) {
+        return this.httpClient.post(this.baseUrl, addSms);
+    }
+
+    put(id, updateSms: Sms) {
+        return this.httpClient.put(this.baseUrl + id, updateSms);
+    }
+
+    delete(id) {
+        return this.httpClient.delete(this.baseUrl + id);
     }
 }

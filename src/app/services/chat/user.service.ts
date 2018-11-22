@@ -47,8 +47,8 @@ export class UserService {
     }
 
     private mapToUsers() {
-        // this.setMyApiUsers();
-        this.setCharlApiUsers();
+        this.setMyApiUsers();
+        // this.setCharlApiUsers();
         // this.setMockUsers();
     }
 

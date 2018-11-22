@@ -56,8 +56,8 @@ export class ChatService {
     }
 
     private mapToChats() {
-    //    this.setMyApiChats();
-       this.setCharlApiChats();
+       this.setMyApiChats();
+    //    this.setCharlApiChats();
     //    this.setMockChats();
     }
 

@@ -7,6 +7,7 @@ import { DateConvertor } from '../functions/date-convertor';
 import { ChatSession } from '../../models/chat/chat-session';
 import { User } from 'src/app/models/chat/user.model';
 import { Receive } from 'src/app/models/sms/receive.model';
+import { ReceiveSmsResponse } from 'src/app/models/sms/receiveSmsResponse.model';
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +23,7 @@ export class ChatSessionService {
     }
 
     getReceiveTest() {
-        return this.smsReceiverService.getApi();
+        return this.smsReceiverService.getCharlApi();
     }
 
     get(contactNo: number) {
@@ -79,22 +80,9 @@ export class ChatSessionService {
     }
 
     private mapToChatSession() {
-        this.smsReceiverService.getApi().toPromise().then((res: Receive[]) => {
-            let count = 0;
-            res.forEach((item) => {
-                if (!this.checkChatSessionExist(Number(item.fromCell), Number(item.toCell))) {
-                    this.chatSessions.push(this.createChatSession(item, ++count));
-                }
-            });
-        });
-
-        // const receives = this.smsReceiverService.get();
-        // let count = 0;
-        // receives.forEach((item) => {
-        //     if (!this.checkChatSessionExist(Number(item.fromCell), Number(item.toCell))) {
-        //         this.chatSessions.push(this.createChatSession(item, ++count));
-        //     }
-        // });
+        // this.setMyApiChatSessions();
+        this.setCharlApiChatSessions();
+        // this.setMockChatSessions();
     }
 
     private createUser(contactNo: string, name: string): User {
@@ -115,7 +103,7 @@ export class ChatSessionService {
             user1Read: false,
             user2Read: false,
             lastMessage: receive.message,
-            lastMessageDate: this.dateConvertor.convertDateReceiver(receive.dateReceiver).toDateString()
+            lastMessageDate: this.dateConvertor.convertDateReceiver(receive.dateReceived).toDateString()
         };
         return chatSession;
     }
@@ -124,5 +112,41 @@ export class ChatSessionService {
         return this.chatSessions.some(chatSession =>
             chatSession.user1Id === user1Id && chatSession.user2Id === user2Id ||
             chatSession.user1Id === user2Id && chatSession.user2Id === user1Id);
+    }
+
+    private setMyApiChatSessions() {
+        this.smsReceiverService.getApi().toPromise().then((res: Receive[]) => {
+            let count = 0;
+            res.forEach((item) => {
+                if (!this.checkChatSessionExist(Number(item.fromCell), Number(item.toCell))) {
+                    this.chatSessions.push(this.createChatSession(item, ++count));
+                }
+            });
+        });
+    }
+
+    private setMockChatSessions() {
+        const receives = this.smsReceiverService.get();
+        let count = 0;
+        receives.forEach((item) => {
+            if (!this.checkChatSessionExist(Number(item.fromCell), Number(item.toCell))) {
+                this.chatSessions.push(this.createChatSession(item, ++count));
+            }
+        });
+    }
+
+    private setCharlApiChatSessions() {
+        this.smsReceiverService.getCharlApi().toPromise()
+            .then((res: ReceiveSmsResponse) => {
+                let count = 0;
+                res.data.forEach((item) => {
+                    if (!this.checkChatSessionExist(Number(item.fromCell), Number(item.toCell))) {
+                        this.chatSessions.push(this.createChatSession(item, ++count));
+                    }
+                });
+            })
+            .catch((err) => {
+                console.error(err);
+            });
     }
 }

@@ -2,7 +2,7 @@ export class Receive {
     fromCell: string;
     toCell: string;
     message: string;
-    dateReceiver: string;
+    dateReceived: string;
     operator: string;
     messageId: number;
     customerId: number;

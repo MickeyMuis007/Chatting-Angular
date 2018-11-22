@@ -4,6 +4,7 @@ import { USERS } from './mock/mock-users';
 
 import { SmsReceiveService } from '../sms/sms-receive.service';
 import { Receive } from 'src/app/models/sms/receive.model';
+import { ReceiveSmsResponse } from 'src/app/models/sms/receiveSmsResponse.model';
 
 @Injectable({
     providedIn: 'root'
@@ -46,7 +47,31 @@ export class UserService {
     }
 
     private mapToUsers() {
+        // this.setMyApiUsers();
+        this.setCharlApiUsers();
+        // this.setMockUsers();
+    }
 
+    private createUser(contactNo: string, name: string): User {
+        return {
+            contactNo: Number(contactNo),
+            name: name,
+            displayName: name
+        };
+    }
+
+    private setMockUsers() {
+        const receives = this.smsReceiveService.get();
+        receives.forEach((item) => {
+            if (!this.users.some(t => t.contactNo === Number(item.fromCell))) {
+                this.users.push(this.createUser(item.fromCell, item.fromCell));
+            } else if (!this.users.some(t => t.contactNo === Number(item.toCell))) {
+                this.users.push(this.createUser(item.toCell, item.toCell));
+            }
+        });
+    }
+
+    private setMyApiUsers() {
         this.smsReceiveService.getApi().toPromise().then((res: Receive[]) => {
             res.forEach((item) => {
                 if (!this.users.some(t => t.contactNo === Number(item.fromCell))) {
@@ -56,23 +81,17 @@ export class UserService {
                 }
             });
         });
-
-        // const receives = this.smsReceiveService.get();
-        // receives.forEach((item) => {
-        //     if (!this.users.some(t => t.contactNo === Number(item.fromCell))) {
-        //         this.users.push(this.createUser(item.fromCell, item.fromCell));
-        //     } else if (!this.users.some(t => t.contactNo === Number(item.toCell))) {
-        //         this.users.push(this.createUser(item.toCell, item.toCell));
-        //     }
-        // });
-
     }
 
-    private createUser(contactNo: string, name: string): User {
-        return {
-            contactNo: Number(contactNo),
-            name: name,
-            displayName: name
-        };
+    private setCharlApiUsers() {
+        this.smsReceiveService.getCharlApi().toPromise().then((res: ReceiveSmsResponse) => {
+            res.data.forEach((item) => {
+                if (!this.users.some(t => t.contactNo === Number(item.fromCell))) {
+                    this.users.push(this.createUser(item.fromCell, item.fromCell));
+                } else if (!this.users.some(t => t.contactNo === Number(item.toCell))) {
+                    this.users.push(this.createUser(item.toCell, item.toCell));
+                }
+            });
+        });
     }
 }

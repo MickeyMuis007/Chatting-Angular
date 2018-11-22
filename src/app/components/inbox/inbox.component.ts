@@ -95,6 +95,14 @@ export class InboxComponent implements OnInit, AfterViewChecked {
     userChanged() {
         console.log('\nevent: userChanged()');
 
+
+        this.chatSessionService.getReceiveTest().toPromise()
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
         console.log(this.chatSessionService.getAll());
         console.log(this.userService.get());
         console.log(this.chatService.get());

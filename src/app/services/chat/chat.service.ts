@@ -7,6 +7,7 @@ import { ChatSessionService } from './chat-session.service';
 
 import { Receive } from 'src/app/models/sms/receive.model';
 import { User } from 'src/app/models/chat/user.model';
+import { ReceiveSmsResponse } from 'src/app/models/sms/receiveSmsResponse.model';
 
 @Injectable({
     providedIn: 'root'
@@ -55,16 +56,9 @@ export class ChatService {
     }
 
     private mapToChats() {
-        this.smsReceiveService.getApi().toPromise().then((res: Receive[]) => {
-            res.forEach((item) => {
-                this.chats.push(this.createChat(item));
-            });
-        });
-
-        // const receives = this.smsReceiveService.get();
-        // receives.forEach((item) => {
-        //     this.chats.push(this.createChat(item));
-        // });
+    //    this.setMyApiChats();
+       this.setCharlApiChats();
+    //    this.setMockChats();
     }
 
     private createChat(receive: Receive): Chat {
@@ -94,6 +88,29 @@ export class ChatService {
     private findChatSessionId(fromCell: string, toCell: string): number {
         const chatSession = this.chatSessionService.getExistingChatSession(Number(fromCell), Number(toCell));
         return chatSession.chatSessionId;
+    }
+
+    private setMockChats() {
+        const receives = this.smsReceiveService.get();
+        receives.forEach((item) => {
+            this.chats.push(this.createChat(item));
+        });
+    }
+
+    private setMyApiChats() {
+        this.smsReceiveService.getApi().toPromise().then((res: Receive[]) => {
+            res.forEach((item) => {
+                this.chats.push(this.createChat(item));
+            });
+        });
+    }
+
+    private setCharlApiChats() {
+        this.smsReceiveService.getCharlApi().toPromise().then((res: ReceiveSmsResponse) => {
+            res.data.forEach((item) => {
+                this.chats.push(this.createChat(item));
+            });
+        });
     }
 }
 

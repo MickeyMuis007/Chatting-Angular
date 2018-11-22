@@ -110,7 +110,7 @@ export class ChatSessionService {
             chatSessionId: chatSessionId,
             user1: this.createUser(receive.fromCell, receive.fromCell),
             user1Id: Number(receive.fromCell),
-            user2: this.createUser(receive.toCell, receive.fromCell),
+            user2: this.createUser(receive.toCell, receive.toCell),
             user2Id: Number(receive.toCell),
             user1Read: false,
             user2Read: false,

@@ -12,7 +12,7 @@ export class SmsService {
     private martinsUrl;
     constructor(private httpClient: HttpClient) {
         this.baseUrl = 'https://localhost:5001/api/sms/';
-        this.martinsUrl = '/api/SMS/SendSMS';
+        this.martinsUrl = 'https://localhost:44386/v1/SMS/';
     }
 
     get() {
@@ -36,6 +36,6 @@ export class SmsService {
     }
 
     sendSms(sendSms: Send) {
-        return this.httpClient.post(this.baseUrl + 'SendSMS', sendSms);
+        return this.httpClient.post(this.martinsUrl + 'SendSMS', sendSms);
     }
 }

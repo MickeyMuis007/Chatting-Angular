@@ -80,8 +80,8 @@ export class ChatSessionService {
     }
 
     private mapToChatSession() {
-        this.setMyApiChatSessions();
-        // this.setCharlApiChatSessions();
+        // this.setMyApiChatSessions();
+         this.setCharlApiChatSessions();
         // this.setMockChatSessions();
     }
 

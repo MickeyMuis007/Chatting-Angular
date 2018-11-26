@@ -37,6 +37,7 @@ export class WriteComponent implements OnInit {
     disableModel: any;                  // Disable model will be used for all disabling of components.
     message: string;
     cellNo: string;
+    fromCell: string;
     chatSession: ChatSession;
 
     //#endregion properties
@@ -80,8 +81,8 @@ export class WriteComponent implements OnInit {
     selectedUserChanged() {
         console.log('\nevent: selectedUserChanged() -> Selected User Changed');
 
+        this.fromCell = '';
         this.currentUser = this.userService.getUser(Number(this.currentUserId));
-
         this.chatSessionExist();
         this.validateSendButton();
     }
@@ -101,6 +102,16 @@ export class WriteComponent implements OnInit {
         this.senderId = -1;
         this.sender = this.createSenderFromCellNo();
         this.validateSendButton();
+    }
+
+    fromCellKeyUp() {
+        console.log('\nevent: fromCellKeyUp()');
+
+        this.currentUserId = -1;
+        if (this.validateFromCellNo()) {
+            this.currentUser = this.createCurrentUserFromFromCellNo();
+            this.validateSendButton();
+        }
     }
 
     messageKeyDown() {
@@ -164,6 +175,7 @@ export class WriteComponent implements OnInit {
         console.log('method: validateSendButton()');
 
         if ((Number(this.senderId) !== -1 || (this.validateCellNo() && this.cellNo)) &&
+            (Number(this.currentUserId) !== -1 || (this.validateFromCellNo() && this.fromCell)) &&
             (this.currentUser ? this.currentUser.contactNo : -1) !== Number(this.senderId) &&
             (this.currentUser ? this.currentUser.contactNo : -1) !== Number(this.cellNo) &&
             this.message && this.currentUser) {
@@ -218,6 +230,8 @@ export class WriteComponent implements OnInit {
     }
 
     private createChatSession(): ChatSession {
+        console.log('method: createChatSession()');
+
         const chatSession: ChatSession = {
             chatSessionId: (this.chatSessionService.getAll().length + 2),
             user1: this.currentUser,
@@ -231,6 +245,8 @@ export class WriteComponent implements OnInit {
     }
 
     private createSenderFromCellNo() {
+        console.log('method: createSenderFromCellNo()');
+
         let sender: User = null;
 
         if (this.validateCellNo()) {
@@ -246,6 +262,8 @@ export class WriteComponent implements OnInit {
     }
 
     private validateCellNo() {
+        console.log('method: validateCellNo()');
+
         let valid = false;
         const isNumber = !isNaN(Number(this.cellNo));
         if (isNumber && this.cellNo.length === 10) {
@@ -258,6 +276,8 @@ export class WriteComponent implements OnInit {
     }
 
     private updateChatSession() {
+        console.log('method: updateChatSession');
+
         this.chatSession.lastMessage = this.message;
         this.chatSession.lastMessageDate = new Date().toDateString();
         this.chatSession.user1Read = this.chatSession.user1Id === this.currentUser.contactNo ? true : false;
@@ -266,12 +286,14 @@ export class WriteComponent implements OnInit {
     }
 
     private addSender() {
+        console.log('method: addSender()');
         if (this.cellNo) {
             this.userService.add(this.sender);
         }
     }
 
     private createSendModel (chat: Chat): Send {
+        console.log('method: createSendModel');
         const send: Send = {
             mTSMSId: -1,
             appId: -1,
@@ -287,7 +309,36 @@ export class WriteComponent implements OnInit {
     }
 
     private sendSms(send: Send) {
+        console.log('method: sendSms()');
         this.smsService.sendSms(send).toPromise();
+    }
+
+    private createCurrentUserFromFromCellNo() {
+        console.log('method: createCurrentUserFromFromCellNo()');
+
+        let currentUser: User = null;
+        if (this.currentUserId === -1 && this.fromCell) {
+            currentUser = {
+                contactNo: Number(this.fromCell),
+                name: this.fromCell,
+                displayName: this.fromCell
+            };
+        }
+        return currentUser;
+    }
+
+    private validateFromCellNo() {
+        console.log('method: validateFromCellNo()');
+
+        let valid = false;
+        const isNumber = !isNaN(Number(this.fromCell));
+        if (isNumber && this.fromCell.length === 10) {
+            valid = true;
+            console.log('From Cell valid');
+        } else {
+            console.log('From Cell not valid');
+        }
+        return valid;
     }
 
     //#endregion method

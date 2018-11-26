@@ -46,6 +46,10 @@ export class UserService {
         // this.users = USERS;
     }
 
+    checkUserExist(contactNo: number) {
+        return this.users.some(user => user.contactNo === contactNo);
+    }
+
     private mapToUsers() {
         this.setMyApiUsers();
         // this.setCharlApiUsers();

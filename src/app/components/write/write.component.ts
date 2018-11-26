@@ -139,6 +139,7 @@ export class WriteComponent implements OnInit {
             }
 
             this.sendSms(this.createSendModel(this.createChat()));
+            this.addCreatedFromCellUser();
             this.addSender();               // Add sender if it's created from cell no
             this.updateChatSession();
             this.setDefaultState();
@@ -339,6 +340,14 @@ export class WriteComponent implements OnInit {
             console.log('From Cell not valid');
         }
         return valid;
+    }
+
+    private addCreatedFromCellUser() {
+        if (this.validateFromCellNo() && this.fromCell) {
+            if (!this.userService.checkUserExist(Number(this.fromCell))) {
+                this.userService.add(this.currentUser);
+            }
+        }
     }
 
     //#endregion method

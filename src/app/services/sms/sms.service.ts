@@ -10,8 +10,11 @@ import { Send } from 'src/app/models/sms/send.model';
 export class SmsService {
     private baseUrl;
     private martinsUrl;
+    private myApiUrl;
+
     constructor(private httpClient: HttpClient) {
-        this.baseUrl = 'https://localhost:5001/api/sms/';
+        this.baseUrl = 'https://localhost:44386/v1/SMS/';
+        this.myApiUrl = 'https://localhost:5001/api/sms/';
         this.martinsUrl = 'https://localhost:44386/v1/SMS/';
     }
 
@@ -36,6 +39,6 @@ export class SmsService {
     }
 
     sendSms(sendSms: Send) {
-        return this.httpClient.post(this.martinsUrl + 'SendSMS', sendSms);
+        return this.httpClient.post(this.baseUrl + 'SendSMS', sendSms);
     }
 }

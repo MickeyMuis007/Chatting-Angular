@@ -2,14 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Sms } from 'src/app/models/sms/sms.model';
+import { Send } from 'src/app/models/sms/send.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SmsService {
     private baseUrl;
+    private martinsUrl;
     constructor(private httpClient: HttpClient) {
         this.baseUrl = 'https://localhost:5001/api/sms/';
+        this.martinsUrl = '/api/SMS/SendSMS';
     }
 
     get() {
@@ -30,5 +33,9 @@ export class SmsService {
 
     delete(id) {
         return this.httpClient.delete(this.baseUrl + id);
+    }
+
+    sendSms(sendSms: Send) {
+        return this.httpClient.post(this.baseUrl + 'SendSMS', sendSms);
     }
 }

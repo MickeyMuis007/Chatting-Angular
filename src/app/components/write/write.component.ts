@@ -6,12 +6,14 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/chat/user.model';
 import { Chat } from 'src/app/models/chat/chat';
 import { ChatSession } from 'src/app/models/chat/chat-session';
+import { Send } from 'src/app/models/sms/send.model';
 
 /* Import Services */
 import { UserService } from 'src/app/services/chat/user.service';
 import { ChatSessionService } from 'src/app/services/chat/chat-session.service';
 import { ChatService } from 'src/app/services/chat/chat.service';
 import { ToastrService } from 'ngx-toastr';
+import { SmsService } from 'src/app/services/sms/sms.service';
 
 
 @Component({
@@ -48,7 +50,8 @@ export class WriteComponent implements OnInit {
         private userService: UserService,
         private chatSessionService: ChatSessionService,
         private chatService: ChatService,
-        private toastr: ToastrService
+        private toastr: ToastrService,
+        private smsService: SmsService
     ) {
         this.title = 'Write';
     }
@@ -111,6 +114,7 @@ export class WriteComponent implements OnInit {
 
         if (this.message) {
             console.log('Send messages.....');
+            const chat: Chat = null;
 
             if (this.chatSessionExist()) {
                 this.getChatSession();                      // If chat session exist. Then first get chat session before one can be created
@@ -123,6 +127,7 @@ export class WriteComponent implements OnInit {
                 this.toastr.success('Message was succesfully send to ' + this.sender.name, 'Send');
             }
 
+            this.sendSms(this.createSendModel(this.createChat()));
             this.addSender();               // Add sender if it's created from cell no
             this.updateChatSession();
             this.setDefaultState();
@@ -264,6 +269,25 @@ export class WriteComponent implements OnInit {
         if (this.cellNo) {
             this.userService.add(this.sender);
         }
+    }
+
+    private createSendModel (chat: Chat): Send {
+        const send: Send = {
+            mTSMSId: -1,
+            appId: -1,
+            refId: -1,
+            from: chat.senderId.toString(),
+            to: chat.receiverId.toString(),
+            text: chat.message,
+            sent: false,
+            password: '',
+            username: ''
+        };
+        return send;
+    }
+
+    private sendSms(send: Send) {
+        this.smsService.sendSms(send).toPromise();
     }
 
     //#endregion method

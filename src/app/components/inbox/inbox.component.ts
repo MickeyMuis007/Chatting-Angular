@@ -11,12 +11,14 @@ import { Component, OnInit, AfterViewChecked, ElementRef, ViewChild } from '@ang
 import { ChatSessionService } from 'src/app/services/chat/chat-session.service';
 import { ChatService } from 'src/app/services/chat/chat.service';
 import { UserService } from 'src/app/services/chat/user.service';
+import { SmsService } from 'src/app/services/sms/sms.service';
 
 /* Models Import */
 import { ChatSession } from 'src/app/models/chat/chat-session';
 import { Chat } from 'src/app/models/chat/chat';
 import { User } from 'src/app/models/chat/user.model';
 import { Receive } from 'src/app/models/sms/receive.model';
+import { Send } from 'src/app/models/sms/send.model';
 
 @Component({
     selector: 'app-inbox',
@@ -54,6 +56,7 @@ export class InboxComponent implements OnInit, AfterViewChecked {
     constructor(
         private chatSessionService: ChatSessionService,
         private chatService: ChatService,
+        private smsService: SmsService,
         private userService: UserService) {
         this.title = 'Inbox';
     }
@@ -121,6 +124,7 @@ export class InboxComponent implements OnInit, AfterViewChecked {
             this.chatService.add(chat);
             this.chats = this.chatService.getChatFromChatSession(this.selectedChatSession.chatSessionId);
             this.markReceiverAsUnread();   // Mark message receiver as unread
+            this.sendSms(this.createSendModel(chat));
             this.message = '';
         }
     }
@@ -134,6 +138,25 @@ export class InboxComponent implements OnInit, AfterViewChecked {
             read = chatSession.user2Read;
         }
         return read;
+    }
+
+    private createSendModel (chat: Chat): Send {
+        const send: Send = {
+            mTSMSId: -1,
+            appId: -1,
+            refId: -1,
+            from: chat.senderId.toString(),
+            to: chat.receiverId.toString(),
+            text: chat.message,
+            sent: false,
+            password: '',
+            username: ''
+        };
+        return send;
+    }
+
+    private sendSms(send: Send) {
+        this.smsService.sendSms(send).toPromise();
     }
 
     //#endregion events

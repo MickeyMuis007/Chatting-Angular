@@ -36,7 +36,7 @@ export class WriteComponent implements OnInit {
     currentUser: User;
     disableModel: any;                  // Disable model will be used for all disabling of components.
     message: string;
-    cellNo: string;
+    toCell: string;
     fromCell: string;
     chatSession: ChatSession;
 
@@ -90,7 +90,7 @@ export class WriteComponent implements OnInit {
     senderChanged() {
         console.log('\nevent: senderChanged() -> Sender Changed');
 
-        this.cellNo = '';
+        this.toCell = '';
         this.sender = this.userService.getUser(Number(this.senderId));
         this.chatSessionExist();
         this.validateSendButton();
@@ -175,10 +175,10 @@ export class WriteComponent implements OnInit {
     private validateSendButton() {
         console.log('method: validateSendButton()');
 
-        if ((Number(this.senderId) !== -1 || (this.validateCellNo() && this.cellNo)) &&
+        if ((Number(this.senderId) !== -1 || (this.validateCellNo() && this.toCell)) &&
             (Number(this.currentUserId) !== -1 || (this.validateFromCellNo() && this.fromCell)) &&
             (this.currentUser ? this.currentUser.contactNo : -1) !== Number(this.senderId) &&
-            (this.currentUser ? this.currentUser.contactNo : -1) !== Number(this.cellNo) &&
+            (this.currentUser ? this.currentUser.contactNo : -1) !== Number(this.toCell) &&
             this.message && this.currentUser) {
             this.enableSendButton();
         } else {
@@ -190,7 +190,7 @@ export class WriteComponent implements OnInit {
         console.log('method: setDefaultState()');
 
         this.message = '';
-        this.cellNo = '';
+        this.toCell = '';
         this.senderId = -1;
         this.sender = null;
 
@@ -251,11 +251,11 @@ export class WriteComponent implements OnInit {
         let sender: User = null;
 
         if (this.validateCellNo()) {
-            if (this.senderId === -1 && this.cellNo) {
+            if (this.senderId === -1 && this.toCell) {
                 sender = {
-                    contactNo: Number(this.cellNo),
-                    name: this.cellNo,
-                    displayName: this.cellNo
+                    contactNo: Number(this.toCell),
+                    name: this.toCell,
+                    displayName: this.toCell
                 };
             }
         }
@@ -266,8 +266,8 @@ export class WriteComponent implements OnInit {
         console.log('method: validateCellNo()');
 
         let valid = false;
-        const isNumber = !isNaN(Number(this.cellNo));
-        if (isNumber && this.cellNo.length === 10) {
+        const isNumber = !isNaN(Number(this.toCell));
+        if (isNumber && this.toCell.length === 10) {
             valid = true;
             console.log('Cell No valid');
         } else {
@@ -288,7 +288,7 @@ export class WriteComponent implements OnInit {
 
     private addSender() {
         console.log('method: addSender()');
-        if (this.cellNo) {
+        if (this.toCell) {
             this.userService.add(this.sender);
         }
     }

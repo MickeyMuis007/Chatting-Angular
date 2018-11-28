@@ -296,15 +296,9 @@ export class WriteComponent implements OnInit {
     private createSendModel (chat: Chat): Send {
         console.log('method: createSendModel');
         const send: Send = {
-            mTSMSId: -1,
-            appId: -1,
-            refId: -1,
             from: chat.senderId.toString(),
-            to: chat.receiverId.toString(),
-            text: chat.message,
-            sent: false,
-            password: '',
-            username: ''
+            to: chat.receiver.name,
+            text: chat.message
         };
         return send;
     }

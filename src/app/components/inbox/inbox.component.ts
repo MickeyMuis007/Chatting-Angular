@@ -142,15 +142,9 @@ export class InboxComponent implements OnInit, AfterViewChecked {
 
     private createSendModel (chat: Chat): Send {
         const send: Send = {
-            mTSMSId: -1,
-            appId: -1,
-            refId: -1,
             from: chat.senderId.toString(),
             to: chat.receiverId.toString(),
-            text: chat.message,
-            sent: false,
-            password: '',
-            username: ''
+            text: chat.message
         };
         return send;
     }
